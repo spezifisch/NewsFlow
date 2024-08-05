@@ -23,19 +23,22 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
+        working-directory: ./NewsFlowFrontend
         run: npm install
 
       - name: Run tests
+        working-directory: ./NewsFlowFrontend
         run: npm test
 
       - name: Build project
+        working-directory: ./NewsFlowFrontend
         run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: svelte-app
-          path: dist/
+          path: ./NewsFlowFrontend/dist/
 
   deploy:
     runs-on: ubuntu-latest
