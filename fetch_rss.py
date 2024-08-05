@@ -11,6 +11,7 @@ import argparse
 import time
 import hmac
 import hashlib
+import uuid
 
 
 def read_config(config_path):
@@ -18,7 +19,7 @@ def read_config(config_path):
         return yaml.safe_load(config_file)
 
 
-def fetch_rss_feed(url, retries, backoff_factor, since):
+def fetch_rss_feed(url, retries, backoff_factor, modified_since, etag):
     session = requests.Session()
     retry = Retry(
         total=retries,
@@ -30,49 +31,63 @@ def fetch_rss_feed(url, retries, backoff_factor, since):
     session.mount("https://", adapter)
 
     headers = {}
-    if since:
-        headers["If-Modified-Since"] = since
+    if modified_since:
+        headers["If-Modified-Since"] = modified_since
+    if etag:
+        headers["If-None-Match"] = etag
 
     response = session.get(url, headers=headers)
     response.raise_for_status()
-    return feedparser.parse(response.content), response
+
+    relevant_headers = {
+        "date": response.headers.get("date"),
+        "content-type": response.headers.get("content-type"),
+        "etag": response.headers.get("etag"),
+    }
+
+    return feedparser.parse(response.content), response, relevant_headers
 
 
 def fetch_rss(config):
-    rss_data = []
+    feeds = []
+    articles = []
     retries = config.get("retries", 3)
     backoff_factor = config.get("backoff_factor", 0.3)
-    since = config.get("since")
 
-    for url in config["rss_urls"]:
+    for feed_config in config["feeds"]:
+        url = feed_config["url"]
+        modified_since = feed_config.get("if_modified_since")
+        etag = feed_config.get("etag")
+        feed_id = feed_config.get("id") or str(uuid.uuid4())
+
         try:
-            feed, response = fetch_rss_feed(url, retries, backoff_factor, since)
+            feed, response, headers = fetch_rss_feed(
+                url, retries, backoff_factor, modified_since, etag
+            )
             feed_info = {
+                "feed_id": feed_id,
                 "feed_title": feed.feed.title,
                 "feed_link": feed.feed.link,
                 "feed_description": feed.feed.description,
                 "status_code": response.status_code,
                 "response_time": response.elapsed.total_seconds(),
-                "headers": dict(response.headers),
+                "headers": headers,
             }
+            feeds.append(feed_info)
             for entry in feed.entries:
-                published_time = time.mktime(entry.published_parsed)
-                if not since or published_time > time.mktime(
-                    time.strptime(since, "%a, %d %b %Y %H:%M:%S %Z")
-                ):
-                    rss_data.append(
-                        {
-                            "title": entry.title,
-                            "link": entry.link,
-                            "published": entry.published,
-                            "summary": entry.summary,
-                            "feed_info": feed_info,
-                        }
-                    )
+                articles.append(
+                    {
+                        "title": entry.title,
+                        "link": entry.link,
+                        "published": entry.published,
+                        "summary": entry.summary,
+                        "feed_id": feed_id,
+                    }
+                )
         except Exception as e:
             print(f"Error fetching {url}: {e}", file=sys.stderr)
 
-    return rss_data
+    return {"feeds": feeds, "articles": articles}
 
 
 def sign_data(data, secret_key):
@@ -87,7 +102,7 @@ def main():
     parser.add_argument(
         "--config",
         type=str,
-        default=os.getenv("CONFIG_PATH", "config.yml"),
+        default=os.getenv("CONFIG_PATH", "config.yaml"),
         help="Path to config file",
     )
     parser.add_argument(
