@@ -1,7 +1,7 @@
 # Makefile
 
 install:
-	poetry install
+	poetry install --no-root
 
 fetch_rss:
 	poetry run python fetch_rss.py --config config.toml --output-json rss_data.json

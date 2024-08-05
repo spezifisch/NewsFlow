@@ -6,7 +6,8 @@ import toml
 from dotenv import load_dotenv
 import requests
 from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
+from urllib3.util import Retry
+import argparse
 
 
 def read_config(config_path):
@@ -55,13 +56,26 @@ def fetch_rss(config):
 
 def main():
     load_dotenv()
-    config_path = os.getenv("CONFIG_PATH", "config.toml")
-    output_json = os.getenv("OUTPUT_JSON", "rss_data.json")
 
-    config = read_config(config_path)
+    parser = argparse.ArgumentParser(description="Fetch RSS feeds and update JSON.")
+    parser.add_argument(
+        "--config",
+        type=str,
+        default=os.getenv("CONFIG_PATH", "config.toml"),
+        help="Path to config file",
+    )
+    parser.add_argument(
+        "--output-json",
+        type=str,
+        default=os.getenv("OUTPUT_JSON", "rss_data.json"),
+        help="Path to output JSON file",
+    )
+    args = parser.parse_args()
+
+    config = read_config(args.config)
     rss_data = fetch_rss(config["fetch_rss"])
 
-    with open(output_json, "w") as json_file:
+    with open(args.output_json, "w") as json_file:
         json.dump(rss_data, json_file, indent=4)
 
 
