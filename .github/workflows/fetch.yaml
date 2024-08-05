@@ -20,5 +20,5 @@ jobs:
 
       - name: Run `make ci`
         env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          NF_SIGNATURE_KEY: ${{ secrets.NF_SIGNATURE_KEY }}
         run: make ci

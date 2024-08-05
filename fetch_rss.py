@@ -105,9 +105,9 @@ def main():
 
     output_json = json.dumps(output, indent=4)
 
-    secret_key = os.getenv("SECRET_KEY")
-    if secret_key:
-        signature = sign_data(output_json, secret_key)
+    signature_key = os.getenv("NF_SIGNATURE_KEY")
+    if signature_key:
+        signature = sign_data(output_json, signature_key)
         output = {"data": output, "signature": signature}
 
     with open(args.output_json, "w") as json_file:
