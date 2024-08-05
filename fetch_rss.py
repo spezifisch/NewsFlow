@@ -87,7 +87,7 @@ def main():
     parser.add_argument(
         "--config",
         type=str,
-        default=os.getenv("CONFIG_PATH", "config.yaml"),
+        default=os.getenv("CONFIG_PATH", "config.yml"),
         help="Path to config file",
     )
     parser.add_argument(
