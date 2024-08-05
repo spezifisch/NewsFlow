@@ -1,7 +1,10 @@
 fetch_rss:
-  rss_urls:
-    - "https://blog.fefe.de/rss.xml?html"
-    - "https://lobste.rs/rss"
+  feeds:
+    - url: "https://blog.fefe.de/rss.xml?html"
+      if_modified_since: "Mon, 01 Jan 2024 00:00:00 GMT"
+      etag: "123456789-hallo-wie-gehts"
+    - url: "https://lobste.rs/rss"
+      if_modified_since: null
+      etag: null
   retries: 3
   backoff_factor: 0.3
-  since: "Mon, 01 Jan 2024 00:00:00 GMT" # Example timestamp
