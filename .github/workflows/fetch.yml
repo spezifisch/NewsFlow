@@ -24,6 +24,8 @@ jobs:
         run: make ci
 
       - name: Deploy to GitHub Pages
+        env:
+          GH_PAGES_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
         run: |
           git config --global user.email 'action@github.com'
           git config --global user.name 'Github Action'
@@ -32,4 +34,4 @@ jobs:
           cp rss_data.json index.json
           git add index.json
           git commit -m "Deploy to GitHub Pages"
-          git push --force origin gh-pages
+          git push --force "https://${GH_PAGES_TOKEN}@github.com/${{ github.repository }}.git" gh-pages
