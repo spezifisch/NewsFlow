@@ -1,8 +1,6 @@
 name: Update RSS Feeds
 
 on:
-  #  schedule:
-  #    - cron: "0 * * * *" # Runs every hour
   workflow_dispatch:
 
 jobs:
@@ -21,4 +19,6 @@ jobs:
         uses: snok/install-poetry@v1
 
       - name: Run `make ci`
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: make ci
