@@ -4,7 +4,7 @@ install:
 	poetry install --no-root
 
 fetch_rss:
-	poetry run python fetch_rss.py --config config.yaml --output-json rss_data.json
+	poetry run python fetch_rss.py --config config.yml --output-json rss_data.json
 
 post_run:
 	cat rss_data.json
