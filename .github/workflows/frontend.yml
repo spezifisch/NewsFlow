@@ -22,17 +22,20 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Install pnpm
+        run: npm install -g pnpm
+
       - name: Install dependencies
         working-directory: ./NewsFlowFrontend
-        run: npm install
+        run: pnpm install
 
       - name: Run tests
         working-directory: ./NewsFlowFrontend
-        run: npm test
+        run: pnpm test
 
       - name: Build project
         working-directory: ./NewsFlowFrontend
-        run: npm run build
+        run: pnpm run build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
