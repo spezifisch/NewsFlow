@@ -1,0 +1,22 @@
+{
+  "name": "my-news-reader",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^1.0.0",
+    "svelte": "^3.38.2",
+    "typescript": "^4.0.0",
+    "vite": "^2.0.0",
+    "postcss": "^8.3.6",
+    "tailwindcss": "^2.2.7",
+    "autoprefixer": "^10.3.1"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "jszip": "^3.7.1"
+  }
+}
