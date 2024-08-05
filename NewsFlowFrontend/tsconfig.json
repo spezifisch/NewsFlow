@@ -1,12 +1,21 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["svelte"]
+    "types": ["svelte", "vitest"],
+    "lib": ["es2020", "dom"],
+    "verbatimModuleSyntax": true
   },
-  "include": ["src/**/*", "src/**/*.svelte"],
+  "include": [
+    "src/**/*",
+    "src/**/*.svelte",
+    "vitest.config.ts",
+    "src/setupTests.ts"
+  ],
   "exclude": ["node_modules", "public"]
 }
