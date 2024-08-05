@@ -24,7 +24,12 @@ jobs:
         run: |
           python3 fetch_rss.py
 
-      - name: Commit and Push changes
+      - name: Fetch RSS Feeds and Update JSON
+        run: |
+          cat rss_data.json
+
+      - name: Comvmit and Push changes
+        if: false
         run: |
           git config --global user.email 'action@github.com'
           git config --global user.name 'Github Action'
