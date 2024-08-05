@@ -1,8 +1,8 @@
 name: Update RSS Feeds
 
 on:
-  schedule:
-    - cron: "0 * * * *" # Runs every hour
+  #  schedule:
+  #    - cron: "0 * * * *" # Runs every hour
   workflow_dispatch:
 
 jobs:
@@ -17,24 +17,8 @@ jobs:
         with:
           python-version: 3.12
 
-      - name: Install feedparser
-        run: python3 -m pip install feedparser
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
 
-      - name: Fetch RSS Feeds and Update JSON
-        run: |
-          python3 fetch_rss.py
-
-      - name: Fetch RSS Feeds and Update JSON
-        run: |
-          cat rss_data.json
-
-      - name: Comvmit and Push changes
-        if: false
-        run: |
-          git config --global user.email 'action@github.com'
-          git config --global user.name 'Github Action'
-          git add rss_data.json
-          git commit -m 'Update RSS data'
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run `make ci`
+        run: make ci
