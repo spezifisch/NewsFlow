@@ -1,57 +1,57 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import ConfigDialog from "./components/ConfigDialog.svelte";
-  import { writable } from "svelte/store";
-  import axios from "axios";
+  import { onMount } from 'svelte'
+  import ConfigDialog from './components/ConfigDialog.svelte'
+  import { writable } from 'svelte/store'
+  import axios from 'axios'
 
-  const showConfig = writable(false);
-  const feeds = writable([]);
-  const articles = writable([]);
-  const selectedFeed = writable(null);
-  const githubToken = localStorage.getItem("github_pat");
+  const showConfig = writable(false)
+  const feeds = writable([])
+  const articles = writable([])
+  const selectedFeed = writable(null)
+  const githubToken = localStorage.getItem('github_pat')
 
   async function fetchArtifact() {
     const headers = {
       Authorization: `token ${githubToken}`,
-      Accept: "application/vnd.github.v3+json",
-    };
+      Accept: 'application/vnd.github.v3+json',
+    }
 
     const runs = await axios.get(
-      "https://api.github.com/repos/your-username/your-repo/actions/runs",
+      'https://api.github.com/repos/your-username/your-repo/actions/runs',
       { headers }
-    );
-    const runId = runs.data.workflow_runs[0].id;
+    )
+    const runId = runs.data.workflow_runs[0].id
 
     const artifacts = await axios.get(
       `https://api.github.com/repos/your-username/your-repo/actions/runs/${runId}/artifacts`,
       { headers }
-    );
-    const artifactId = artifacts.data.artifacts[0].id;
+    )
+    const artifactId = artifacts.data.artifacts[0].id
 
     const download = await axios.get(
       `https://api.github.com/repos/your-username/your-repo/actions/artifacts/${artifactId}/zip`,
-      { headers, responseType: "blob" }
-    );
+      { headers, responseType: 'blob' }
+    )
 
-    const zip = new JSZip();
-    const content = await zip.loadAsync(download.data);
-    const fileContent = await content.files["rss_data.json"].async("string");
+    const zip = new JSZip()
+    const content = await zip.loadAsync(download.data)
+    const fileContent = await content.files['rss_data.json'].async('string')
 
-    const parsedData = JSON.parse(fileContent);
-    feeds.set(parsedData.data.feeds);
-    articles.set(parsedData.data.articles);
+    const parsedData = JSON.parse(fileContent)
+    feeds.set(parsedData.data.feeds)
+    articles.set(parsedData.data.articles)
   }
 
   onMount(() => {
     if (githubToken) {
-      fetchArtifact();
+      fetchArtifact()
     } else {
-      showConfig.set(true);
+      showConfig.set(true)
     }
-  });
+  })
 
   function selectFeed(feedId) {
-    selectedFeed.set(feedId);
+    selectedFeed.set(feedId)
   }
 </script>
 

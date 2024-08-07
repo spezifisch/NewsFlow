@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { writable } from "svelte/store";
+  import { writable } from 'svelte/store'
 
-  export let show = writable(false);
+  export let show = writable(false)
 
-  const PATLink = "https://github.com/settings/tokens/new";
+  const PATLink = 'https://github.com/settings/tokens/new'
 
   function saveConfig() {
-    const patInput = document.getElementById("patInput") as HTMLInputElement;
-    localStorage.setItem("github_pat", patInput.value);
-    show.set(false);
+    const patInput = document.getElementById('patInput') as HTMLInputElement
+    localStorage.setItem('github_pat', patInput.value)
+    show.set(false)
   }
 </script>
 
