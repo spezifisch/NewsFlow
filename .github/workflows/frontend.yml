@@ -61,7 +61,7 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git clone --branch gh-pages https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git gh-pages
-          rsync -av --delete dist/ gh-pages/
+          rsync -av --delete --exclude=.git dist/ gh-pages/
           cd gh-pages
           git add .
           git commit -m "Deploy frontend" || echo "No changes to commit"
