@@ -1,14 +1,19 @@
 <script lang="ts">
   import { writable } from 'svelte/store'
+  import type { Writable } from 'svelte/store'
 
-  export let show = writable(false)
+  export let show: Writable<boolean> = writable(false)
 
   const PATLink = 'https://github.com/settings/tokens/new'
 
   function saveConfig() {
-    const patInput = document.getElementById('patInput') as HTMLInputElement
-    localStorage.setItem('github_pat', patInput.value)
-    show.set(false)
+    const patInput = document.getElementById(
+      'patInput'
+    ) as HTMLInputElement | null
+    if (patInput) {
+      localStorage.setItem('github_pat', patInput.value)
+      show.set(false)
+    }
   }
 </script>
 
@@ -29,10 +34,9 @@
               </h3>
               <div class="mt-2">
                 <p class="text-sm text-gray-500">
-                  Create a PAT with appropriate permissions from <a
-                    href={PATLink}
-                    target="_blank"
-                    class="text-blue-600">here</a
+                  Create a PAT with appropriate permissions from
+                  <a href={PATLink} target="_blank" class="text-blue-600"
+                    >here</a
                   >.
                 </p>
                 <input

@@ -1,7 +1,6 @@
 import { sveltePreprocess } from 'svelte-preprocess'
 
-const config = {
+export default {
   preprocess: sveltePreprocess(),
+  // other Svelte options
 }
-
-export default config

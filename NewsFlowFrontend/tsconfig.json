@@ -16,14 +16,6 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "include": [
-    "src/**/*",
-    "src/**/*.svelte",
-    "vite.config.ts",
-    "vitest.config.ts",
-    "src/setupTests.ts",
-    "eslint.config.mjs",
-    "tailwind.config.js"
-  ],
-  "exclude": ["node_modules", "__sapper__", "public"]
+  "include": ["src/**/*", "src/**/*.svelte", "*.config.ts", "*.config.*js"],
+  "exclude": ["node_modules/*", "__sapper__", "public/*"]
 }
