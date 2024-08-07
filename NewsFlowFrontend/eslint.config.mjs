@@ -1,45 +1,57 @@
-import eslintRecommended from '@eslint/js'
-import tsParser from '@typescript-eslint/parser'
-import tsPlugin from '@typescript-eslint/eslint-plugin'
-import eslintPluginPrettier from 'eslint-plugin-prettier'
-import eslintPluginSvelte from 'eslint-plugin-svelte'
-import eslintPluginTypeScript from '@typescript-eslint/eslint-plugin'
+import { FlatCompat } from '@eslint/eslintrc'
+import js from '@eslint/js'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const { configs: eslintRecommendedConfigs } = eslintRecommended
+// Mimic CommonJS variables -- not needed if using CommonJS
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname, // optional; default: process.cwd()
+  resolvePluginsRelativeTo: __dirname, // optional
+  recommendedConfig: js.configs.recommended, // optional unless you're using "eslint:recommended"
+  allConfig: js.configs.all, // optional unless you're using "eslint:all"
+})
 
 export default [
-  eslintRecommendedConfigs.recommended,
-  eslintPluginSvelte.configs.recommended,
-  eslintPluginPrettier.configs.recommended,
-  eslintPluginTypeScript.configs.recommended,
-  {
-    files: ['**/*.{js,ts,svelte}'],
-    ignores: ['node_modules/**', 'public/**'],
-    languageOptions: {
+  // Mimic ESLintRC-style extends
+  ...compat.extends(
+    'eslint:recommended',
+    'plugin:svelte/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended'
+  ),
+
+  // Mimic environments
+  ...compat.env({
+    es2020: true,
+    browser: true,
+    node: true,
+  }),
+
+  // Mimic plugins
+  ...compat.plugins('svelte', '@typescript-eslint', 'prettier'),
+
+  // Translate an entire config
+  ...compat.config({
+    plugins: ['svelte', '@typescript-eslint', 'prettier'],
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
       ecmaVersion: 2020,
       sourceType: 'module',
-      parser: tsParser,
-      parserOptions: {
-        ecmaVersion: 2020,
-        sourceType: 'module',
-        extraFileExtensions: ['.svelte'],
-        project: './tsconfig.json',
-        allowImportingTsExtensions: true,
-      },
-      globals: {
-        localStorage: 'readonly',
-        document: 'readonly',
-        JSZip: 'readonly',
-      },
-    },
-    plugins: {
-      svelte: eslintPluginSvelte,
-      '@typescript-eslint': tsPlugin,
-      prettier: eslintPluginPrettier,
+      extraFileExtensions: ['.svelte'],
+      project: './tsconfig.json',
+      allowImportingTsExtensions: true,
     },
     rules: {
       'prettier/prettier': 'error',
       '@typescript-eslint/explicit-module-boundary-types': 'warn',
     },
-  },
+    globals: {
+      localStorage: 'readonly',
+      document: 'readonly',
+      JSZip: 'readonly',
+    },
+  }),
 ]

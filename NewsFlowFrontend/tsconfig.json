@@ -21,7 +21,9 @@
     "src/**/*.svelte",
     "vite.config.ts",
     "vitest.config.ts",
-    "src/setupTests.ts"
+    "src/setupTests.ts",
+    "eslint.config.mjs",
+    "tailwind.config.js"
   ],
   "exclude": ["node_modules", "__sapper__", "public"]
 }
