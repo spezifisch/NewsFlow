@@ -64,5 +64,5 @@ jobs:
           rsync -av --delete dist/ gh-pages/
           cd gh-pages
           git add .
-          git commit -m "Deploy frontend"
+          git commit -m "Deploy frontend" || echo "No changes to commit"
           git push
