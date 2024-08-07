@@ -4,22 +4,11 @@ This project is built with Svelte, TypeScript, Vite, and TailwindCSS. It also in
 
 ## Table of Contents
 
-- [Installation](#installation)
 - [Scripts](#scripts)
 - [Configuration](#configuration)
 - [Folder Structure](#folder-structure)
 - [Linting and Formatting](#linting-and-formatting)
 - [Testing](#testing)
-
-## Installation
-
-To get started, clone the repository and install the dependencies using `pnpm`:
-
-```bash
-git clone <repository-url>
-cd <repository-directory>
-pnpm install
-```
 
 ## Scripts
 
