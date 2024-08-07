@@ -2,14 +2,27 @@
   import { onMount } from 'svelte'
   import ConfigDialog from './components/ConfigDialog.svelte'
   import { writable } from 'svelte/store'
+  import type { Writable } from 'svelte/store'
   import axios from 'axios'
   import JSZip from 'jszip'
 
-  const showConfig = writable(false)
-  const feeds = writable([])
-  const articles = writable([])
-  const selectedFeed = writable(null)
-  const githubToken = localStorage.getItem('github_pat')
+  interface Feed {
+    feed_id: string
+    feed_title: string
+  }
+
+  interface Article {
+    title: string
+    summary: string
+    link: string
+    feed_id: string
+  }
+
+  let showConfig: Writable<boolean> = writable(false)
+  const feeds: Writable<Feed[]> = writable([])
+  const articles: Writable<Article[]> = writable([])
+  const selectedFeed: Writable<string | null> = writable(null)
+  const githubToken: string | null = localStorage.getItem('github_pat')
 
   async function fetchArtifact() {
     const headers = {
@@ -51,12 +64,12 @@
     }
   })
 
-  function selectFeed(feedId) {
+  function selectFeed(feedId: string) {
     selectedFeed.set(feedId)
   }
 </script>
 
-<ConfigDialog bind:show={$showConfig} />
+<ConfigDialog bind:show={showConfig} />
 
 <main class="flex h-screen">
   <div class="w-1/3 bg-gray-100 p-4">
@@ -66,12 +79,14 @@
     >
     <ul>
       {#each $feeds as feed (feed.feed_id)}
-        <button
-          on:click={() => selectFeed(feed.feed_id)}
-          class="cursor-pointer p-2 rounded-md hover:bg-gray-200"
-        >
-          {feed.feed_title}
-        </button>
+        <li>
+          <button
+            on:click={() => selectFeed(feed.feed_id)}
+            class="cursor-pointer p-2 rounded-md hover:bg-gray-200"
+          >
+            {feed.feed_title}
+          </button>
+        </li>
       {/each}
     </ul>
   </div>
