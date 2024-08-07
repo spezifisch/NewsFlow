@@ -1,21 +1,27 @@
 {
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "moduleResolution": "bundler",
+    "noEmit": true,
     "target": "es2020",
     "module": "esnext",
-    "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
     "types": ["svelte", "vitest"],
     "lib": ["es2020", "dom"],
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*",
     "src/**/*.svelte",
+    "vite.config.ts",
     "vitest.config.ts",
     "src/setupTests.ts"
   ],
-  "exclude": ["node_modules", "public"]
+  "exclude": ["node_modules", "__sapper__", "public"]
 }
