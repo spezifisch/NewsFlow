@@ -14,11 +14,16 @@
     "verbatimModuleSyntax": true,
     "strict": true,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
     "skipLibCheck": true
   },
   "include": [
     "src/**/*",
     "src/**/*.svelte",
+    "src/**/*.ts",
     "*.config.ts",
     "*.config.*js",
     ".*.*js"
