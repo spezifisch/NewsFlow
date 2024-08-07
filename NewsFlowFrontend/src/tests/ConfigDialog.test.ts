@@ -7,12 +7,9 @@ describe('ConfigDialog.svelte', () => {
   it('opens and closes the config dialog', async () => {
     // Mock the show store
     const show = writable(true)
-    const { getByText, getByPlaceholderText, component } = render(
-      ConfigDialog,
-      {
-        props: { show },
-      }
-    )
+    const { getByText, getByPlaceholderText } = render(ConfigDialog, {
+      props: { show },
+    })
 
     // Check if the dialog is open
     const saveButton = getByText(/save/i)

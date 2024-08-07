@@ -65,12 +65,12 @@
     >
     <ul>
       {#each $feeds as feed (feed.feed_id)}
-        <li
+        <button
           on:click={() => selectFeed(feed.feed_id)}
           class="cursor-pointer p-2 rounded-md hover:bg-gray-200"
         >
           {feed.feed_title}
-        </li>
+        </button>
       {/each}
     </ul>
   </div>
