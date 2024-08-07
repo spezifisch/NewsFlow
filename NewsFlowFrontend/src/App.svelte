@@ -3,6 +3,7 @@
   import ConfigDialog from './components/ConfigDialog.svelte'
   import { writable } from 'svelte/store'
   import axios from 'axios'
+  import JSZip from 'jszip'
 
   const showConfig = writable(false)
   const feeds = writable([])
