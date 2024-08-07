@@ -59,5 +59,6 @@ export default [
       document: 'readonly',
       JSZip: 'readonly',
     },
+    ignorePatterns: ['dist/**/*'],
   }),
 ]
