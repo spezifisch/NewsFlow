@@ -16,6 +16,12 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "src/**/*.svelte", "*.config.ts", "*.config.*js"],
+  "include": [
+    "src/**/*",
+    "src/**/*.svelte",
+    "*.config.ts",
+    "*.config.*js",
+    ".*.*js"
+  ],
   "exclude": ["node_modules/*", "__sapper__", "public/*"]
 }
