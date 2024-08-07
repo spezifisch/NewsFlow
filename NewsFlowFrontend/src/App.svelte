@@ -69,6 +69,8 @@
   }
 </script>
 
+<h2>BAR</h2>
+
 <ConfigDialog bind:show={showConfig} />
 
 <main class="flex h-screen">
